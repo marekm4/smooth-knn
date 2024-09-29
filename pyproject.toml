@@ -4,9 +4,9 @@ build-backend = "hatchling.build"
 
 [project]
 name = "smooth-knn"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
-  "numpy",
+  "scikit-learn",
 ]
 authors = [
   { name="Marek Michalik", email="marekmichalik43@gmail.com" },
