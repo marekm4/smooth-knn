@@ -4,6 +4,7 @@
 ![Classifier comparison](docs/plot_classifier_comparison.png)
 
 ## Results
+*No cross validation, no fine tuning, Smooth Nearest Neighbors with default hyperparameters, other classfiers with hyperparameters from [Classifier comparison](https://scikit-learn.org/1.5/auto_examples/classification/plot_classifier_comparison.html), Make Moons, Make Cicles and Linearly Separable as in [Classifier comparison](https://scikit-learn.org/1.5/auto_examples/classification/plot_classifier_comparison.html), Iris and Wine used as is*
 | | Make Moons | Make Circles | Linearly Separable | Iris | Wine | Average | 
 | - | - | - | - | - | - | - | 
 | Smooth Nearest Neighbors | 0.95 | 0.925 | 0.95 | 0.9833 | 0.9722 | 0.9561 | 
@@ -30,3 +31,6 @@ from smooth_knn.classifier import SmoothKNeighborsClassifier
 clf = SmoothKNeighborsClassifier()
 clf.fit(X, y)
 ```
+
+## Blog
+https://medium.com/@marek.michalik/adding-smoothness-to-k-nearest-neighbors-4f87b876e8f8
