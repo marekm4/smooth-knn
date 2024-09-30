@@ -94,6 +94,6 @@ for name, score in sorted(scores.items(), key=lambda x: sum(x[1]), reverse=True)
     print(end="| ")
     print(name, end=" | ")
     for s in score:
-        print(s, end=" | ")
-    print(np.sum(score) / len(datasets), end=" | ")
+        print(round(s, 4), end=" | ")
+    print(round(np.sum(score) / len(datasets), 4), end=" | ")
     print()
