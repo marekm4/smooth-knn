@@ -29,48 +29,28 @@ import numpy as np
 from matplotlib.colors import ListedColormap
 
 from sklearn.datasets import make_circles, make_classification, make_moons
-from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
-from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
-from sklearn.gaussian_process import GaussianProcessClassifier
-from sklearn.gaussian_process.kernels import RBF
 from sklearn.inspection import DecisionBoundaryDisplay
 from sklearn.model_selection import train_test_split
-from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
-from sklearn.svm import SVC
-from sklearn.tree import DecisionTreeClassifier
 
 from src.smooth_knn.classifier import SmoothKNeighborsClassifier
 
 names = [
-    "Nearest Neighbors",
-    "Smooth Nearest Neighbors",
-    "RBF SVM",
-    "Gaussian Process",
-    "Decision Tree",
-    "Random Forest",
-    "Neural Net",
-    "AdaBoost",
-    "Naive Bayes",
-    "QDA",
+    "KNeighborsClassifier(3)",
+    "KNeighborsClassifier(10)",
+    "KNeighborsClassifier(20)",
+    "KNeighborsClassifier(20, weighted)",
+    "SmoothKNeighborsClassifier()",
 ]
 
 classifiers = [
     KNeighborsClassifier(3),
+    KNeighborsClassifier(10),
+    KNeighborsClassifier(20),
+    KNeighborsClassifier(20, weights="distance"),
     SmoothKNeighborsClassifier(),
-    SVC(gamma=2, C=1, random_state=42),
-    GaussianProcessClassifier(1.0 * RBF(1.0), random_state=42),
-    DecisionTreeClassifier(max_depth=5, random_state=42),
-    RandomForestClassifier(
-        max_depth=5, n_estimators=10, max_features=1, random_state=42
-    ),
-    MLPClassifier(alpha=1, max_iter=1000, random_state=42),
-    AdaBoostClassifier(algorithm="SAMME", random_state=42),
-    GaussianNB(),
-    QuadraticDiscriminantAnalysis(),
 ]
 
 X, y = make_classification(
@@ -86,7 +66,7 @@ datasets = [
     linearly_separable,
 ]
 
-figure = plt.figure(figsize=(27, 9))
+figure = plt.figure(figsize=(18, 9))
 i = 1
 # iterate over datasets
 for ds_cnt, ds in enumerate(datasets):
@@ -124,9 +104,12 @@ for ds_cnt, ds in enumerate(datasets):
         clf = make_pipeline(StandardScaler(), clf)
         clf.fit(X_train, y_train)
         score = clf.score(X_test, y_test)
-        DecisionBoundaryDisplay.from_estimator(
-            clf, X, cmap=cm, alpha=0.8, ax=ax, eps=0.5
+        feature_1, feature_2 = np.meshgrid(
+            np.linspace(x_min, x_max), np.linspace(y_min, y_max)
         )
+        grid = np.vstack([feature_1.ravel(), feature_2.ravel()]).T
+        y_pred = np.reshape(clf.predict(grid), feature_1.shape)
+        DecisionBoundaryDisplay(xx0=feature_1, xx1=feature_2, response=y_pred).plot(ax=ax, cmap=cm)
 
         # Plot the training points
         ax.scatter(

@@ -6,7 +6,7 @@ from sklearn.neighbors import KDTree
 
 
 class SmoothKNeighborsClassifier(BaseEstimator, ClassifierMixin):
-    def __init__(self, n_neighbors=20, gamma=0.9):
+    def __init__(self, n_neighbors=18, gamma=0.9):
         self.n_neighbors = n_neighbors
         self.gamma = gamma
 
