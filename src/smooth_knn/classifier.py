@@ -1,19 +1,18 @@
 import math
 
 import numpy as np
+from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.neighbors import KDTree
 
 
-class SmoothKNeighborsClassifier:
+class SmoothKNeighborsClassifier(BaseEstimator, ClassifierMixin):
     def __init__(self, n_neighbors=20, gamma=0.9):
         self.n_neighbors = n_neighbors
         self.gamma = gamma
-        self.tree = None
-        self.y = None
-        self.n_classes = None
 
     def fit(self, X, y):
         self.tree = KDTree(np.array(X))
+        self.classes_ = np.array(sorted(set(y)))
         self.y = np.array(y)
 
     def predict(self, X):
@@ -29,4 +28,4 @@ class SmoothKNeighborsClassifier:
             for key, value in results.items():
                 results[key] = np.mean(value) * math.pow(self.gamma, len(value))
             predictions.append(min(results, key=results.get))
-        return predictions
+        return np.array(predictions)
